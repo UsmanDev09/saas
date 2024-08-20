@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+@font-face {
+  font-family: 'Virgil';
+  src: url('/fonts/Virgil.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Virgil', sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+/* Add dark mode styles */
+.dark {
+  --bg-color: #1a222c; /* Dark background color */
+  --text-color: #e2e8f0; /* Dark text color */
+}
+
+.dark .bg-white {
+  background-color: #2d3748; /* Dark background color for elements */
+}
+
+.dark .text-black {
+  color: #e2e8f0; /* Dark text color for elements */
+}
+
+/* Ensure utility classes are applied correctly */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
