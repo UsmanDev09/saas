@@ -6,7 +6,7 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import TaskHeader from "@/components/TaskHeader";
 import DropdownDefault from "@/components/Dropdowns/DropdownDefault";
 import Drag from "@/js/drag";
-import { deleteTask, Task, Subtask } from "@/redux/tasks/tasksSlice";
+import { deleteTask, Task } from "@/redux/tasks/tasksSlice";
 import TaskPopupEdit from "../TaskPopupEdit";
 
 const TaskKanban: React.FC = () => {
@@ -33,7 +33,7 @@ const TaskKanban: React.FC = () => {
       });
       setPopupOpen(true);
     }
-  };  
+  };
 
   const renderTasks = (column: 'To-Do' | 'In-Progress' | 'Completed') => {
     return Tasks
@@ -131,8 +131,9 @@ const TaskKanban: React.FC = () => {
       {/* Popup for editing task */}
       {popupOpen && selectedTask && (
         <TaskPopupEdit
+          popupOpen={popupOpen}
+          setPopupOpen={setPopupOpen}
           task={selectedTask}
-          onClose={() => setPopupOpen(false)}
         />
       )}
     </>
