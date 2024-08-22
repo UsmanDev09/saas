@@ -1,99 +1,94 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { v4 as uuidv4 } from 'uuid';
 
-interface Subtask {
+export interface Subtask {
   id: string;
   title: string;
   completed: boolean;
 }
 
-interface Task {
+export interface Task {
   id: string;
   title: string;
-  description: string;  // New field
+  description: string;
+  column: 'To-Do' | 'In-Progress' | 'Completed';
   subtasks: Subtask[];
 }
 
-interface TasksState {
-  taskList: Task[];
+export interface TasksState {
+  TaskList: Task[];
 }
 
-const initialState: TasksState = {
-  taskList: [
+const initialState = {
+  TaskList: [
     {
-      id: 'task1',
-      title: 'Task 1',
-      description: 'Description for Task 1',  // New field
+      id: '1',
+      title: 'Task One',  
+      description: 'This is a description for Task One',
+      column: 'To-Do',
       subtasks: [
-        { id: 'subtask1-1', title: 'Subtask 1.1', completed: false },
-        { id: 'subtask1-2', title: 'Subtask 1.2', completed: true },
+        { id: '1', title: 'Subtask One', completed: false },
+        { id: '2', title: 'Subtask Two', completed: true },
       ],
     },
     {
-      id: 'task2',
-      title: 'Task 2',
-      description: 'Description for Task 2',  // New field
+      id: '2',
+      title: 'Task Two',
+      description: 'This is a description for Task Two',
+      column: 'In-Progress',
       subtasks: [
-        { id: 'subtask2-1', title: 'Subtask 2.1', completed: false },
-        { id: 'subtask2-2', title: 'Subtask 2.2', completed: false },
+        { id: '3', title: 'Subtask Three', completed: false },
+        { id: '4', title: 'Subtask Four', completed: true },
       ],
     },
+    // More tasks...
   ],
 };
 
-
-const tasksSlice = createSlice({
+const TasksSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    addTask: (state, action: PayloadAction<Omit<Task, 'id'>>) => {
-      const newTask: Task = { ...action.payload, id: uuidv4() };
-      state.taskList.push(newTask);
+    addTask: (state, action) => {
+      const newTask = {
+        ...action.payload,
+        column: 'To-Do', // Automatically set the column to 'To-Do'
+      };
+      state.TaskList.push(newTask);
     },
-    updateTask: (state, action: PayloadAction<Task>) => {
-      const { id, title, description, subtasks } = action.payload;
-      const existingTask = state.taskList.find(task => task.id === id);
-      if (existingTask) {
-        existingTask.title = title;
-        existingTask.description = description;  // Update description
-        existingTask.subtasks = subtasks;
+    updateTask: (state, action) => {
+      const index = state.TaskList.findIndex(task => task.id === action.payload.id);
+      if (index !== -1) {
+        state.TaskList[index] = action.payload;
       }
     },
-    deleteTask: (state, action: PayloadAction<string>) => {
-      state.taskList = state.taskList.filter(task => task.id !== action.payload);
+    deleteTask: (state, action) => {
+      state.TaskList = state.TaskList.filter(task => task.id !== action.payload);
     },
-    addSubtask: (
-      state,
-      action: PayloadAction<{ taskId: string; subtask: Subtask }>
-    ) => {
-      const { taskId, subtask } = action.payload;
-      const task = state.taskList.find(task => task.id === taskId);
+    addSubtask: (state, action) => {
+      const task = state.TaskList.find(task => task.id === action.payload.taskId);
       if (task) {
-        task.subtasks.push(subtask);
+        task.subtasks.push(action.payload.subtask);
       }
     },
-    updateSubtask: (
-      state,
-      action: PayloadAction<{ taskId: string; subtask: Subtask }>
-    ) => {
-      const { taskId, subtask } = action.payload;
-      const task = state.taskList.find(task => task.id === taskId);
+    updateSubtask: (state, action) => {
+      const task = state.TaskList.find(task => task.id === action.payload.taskId);
       if (task) {
-        const existingSubtask = task.subtasks.find(st => st.id === subtask.id);
-        if (existingSubtask) {
-          existingSubtask.title = subtask.title;
-          existingSubtask.completed = subtask.completed;
+        const subtaskIndex = task.subtasks.findIndex(subtask => subtask.id === action.payload.subtask.id);
+        if (subtaskIndex !== -1) {
+          task.subtasks[subtaskIndex] = action.payload.subtask;
         }
       }
     },
-    deleteSubtask: (
-      state,
-      action: PayloadAction<{ taskId: string; subtaskId: string }>
-    ) => {
-      const { taskId, subtaskId } = action.payload;
-      const task = state.taskList.find(task => task.id === taskId);
+    deleteSubtask: (state, action) => {
+      const task = state.TaskList.find(task => task.id === action.payload.taskId);
       if (task) {
-        task.subtasks = task.subtasks.filter(st => st.id !== subtaskId);
+        task.subtasks = task.subtasks.filter(subtask => subtask.id !== action.payload.subtaskId);
+      }
+    },
+    moveTask: (state, action) => {
+      const task = state.TaskList.find(task => task.id === action.payload.taskId);
+      if (task) {
+        task.column = action.payload.column;
       }
     },
     toggleSubtaskCompletion: (
@@ -101,7 +96,7 @@ const tasksSlice = createSlice({
       action: PayloadAction<{ taskId: string; subtaskId: string }>
     ) => {
       const { taskId, subtaskId } = action.payload;
-      const task = state.taskList.find(task => task.id === taskId);
+      const task = state.TaskList.find(task => task.id === taskId);
       if (task) {
         const subtask = task.subtasks.find(subtask => subtask.id === subtaskId);
         if (subtask) {
@@ -119,7 +114,8 @@ export const {
   addSubtask,
   updateSubtask,
   deleteSubtask,
-  toggleSubtaskCompletion,
-} = tasksSlice.actions;
+  moveTask,
+  toggleSubtaskCompletion
+} = TasksSlice.actions;
 
-export default tasksSlice.reducer;  
+export default TasksSlice.reducer;

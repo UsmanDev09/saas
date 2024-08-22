@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import chartsReducer from './charts/chartsSlice';
 import profileReducer from './profile/profileSlice';
-import tasksReducer from './tasks/tasksSlice'
+import tasksReducer from './tasks/tasksSlice';
 
 const store = configureStore({
   reducer: {
