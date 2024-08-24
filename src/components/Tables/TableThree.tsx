@@ -1,33 +1,21 @@
+'use client';
+import { useSelector, useDispatch } from 'react-redux';
 import { Package } from "@/types/package";
-
-const packageData: Package[] = [
-  {
-    name: "Free package",
-    price: 0.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Paid",
-  },
-  {
-    name: "Standard Package",
-    price: 59.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Paid",
-  },
-  {
-    name: "Business Package",
-    price: 99.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Unpaid",
-  },
-  {
-    name: "Standard Package",
-    price: 59.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Pending",
-  },
-];
+import { deletePackage, updatePackage } from '@/redux/tables/tablesSlice';
+import { RootState } from '@/redux/store';
 
 const TableThree = () => {
+  const dispatch = useDispatch();
+  const packages = useSelector((state: RootState) => state.tables.packages);
+
+  const handleDelete = (name: string) => {
+    dispatch(deletePackage(name));
+  };
+
+  const handleUpdate = (updatedPackage: Package) => {
+    dispatch(updatePackage(updatedPackage));
+  };
+
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
@@ -49,7 +37,7 @@ const TableThree = () => {
             </tr>
           </thead>
           <tbody>
-            {packageData.map((packageItem, key) => (
+            {packages.map((packageItem, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
@@ -77,7 +65,7 @@ const TableThree = () => {
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-                    <button className="hover:text-primary">
+                  <button className="hover:text-primary">
                       <svg
                         className="fill-current"
                         width="18"
@@ -144,6 +132,7 @@ const TableThree = () => {
                     </button>
                   </div>
                 </td>
+                
               </tr>
             ))}
           </tbody>

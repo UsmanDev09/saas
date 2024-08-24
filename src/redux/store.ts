@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import chartsReducer from './charts/chartsSlice';
 import profileReducer from './profile/profileSlice';
 import tasksReducer from './tasks/tasksSlice';
+import tableReducer from './tables/tablesSlice';
 
 const store = configureStore({
   reducer: {
     charts: chartsReducer,
     profile: profileReducer,
     tasks: tasksReducer,
+    tables: tableReducer,
   },
 });
 
