@@ -8,13 +8,17 @@ import { initialUserData } from '@/data/tables/users';
 import { initialBrandData } from '@/data/tables/brands';
 import { initialProductData } from '@/data/tables/products';
 import { initialPackageData } from '@/data/tables/packages';
+import { Employee } from '@/types/employee';
+import { intialEmployeeData } from '@/data/tables/employees';
 
 
 interface AppState {
   brands: BRAND[];
   products: Product[];
   packages: Package[];
-  users: User[];
+  users: User[];  
+  employees: Employee[];
+  
 }
 
 const initialState: AppState = {
@@ -22,6 +26,7 @@ const initialState: AppState = {
   products: initialProductData,
   packages: initialPackageData,
   users: initialUserData,
+  employees :intialEmployeeData,
 };
 
 const tablesSlice = createSlice({
@@ -91,7 +96,19 @@ const tablesSlice = createSlice({
       state.users.splice(action.payload, 1);
     },
 
-
+    //employee reducers
+    addEmployee: (state, action: PayloadAction<Employee>) => {
+      state.employees.push(action.payload);
+    },
+    updateEmployee: (state, action: PayloadAction<Employee>) => {
+      const index = state.employees.findIndex((emp) => emp.id === action.payload.id);
+      if (index !== -1) {
+        state.employees[index] = action.payload;
+      }
+    },
+    deleteEmployee: (state, action: PayloadAction<string>) => {
+      state.employees = state.employees.filter((emp) => emp.id !== action.payload);
+    },
   },
 });
 
@@ -114,7 +131,11 @@ export const {
   addUser,
   updateUser,
   deleteUser,
-  
+
+  addEmployee, 
+  updateEmployee, 
+  deleteEmployee,
+
 } = tablesSlice.actions;
 
 export default tablesSlice.reducer;

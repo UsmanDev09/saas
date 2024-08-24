@@ -3,6 +3,8 @@ import chartsReducer from './charts/chartsSlice';
 import profileReducer from './profile/profileSlice';
 import tasksReducer from './tasks/tasksSlice';
 import tableReducer from './tables/tablesSlice';
+import settingsReducer from './settings/settingsSlice';
+import formReducer from './forms/formSlice';
 
 const store = configureStore({
   reducer: {
@@ -10,6 +12,8 @@ const store = configureStore({
     profile: profileReducer,
     tasks: tasksReducer,
     tables: tableReducer,
+    settings: settingsReducer,
+    form: formReducer,
   },
 });
 

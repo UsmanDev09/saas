@@ -35,7 +35,7 @@ const Settings = () => {
                       </label>
                       <div className="relative">
                         <span className="absolute left-4.5 top-4">
-                          <svg
+                        <svg
                             className="fill-current"
                             width="20"
                             height="20"
@@ -97,7 +97,7 @@ const Settings = () => {
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
-                        <svg
+                      <svg
                           className="fill-current"
                           width="20"
                           height="20"
@@ -135,15 +135,15 @@ const Settings = () => {
                   <div className="mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="Username"
+                      htmlFor="username"
                     >
                       Username
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       type="text"
-                      name="Username"
-                      id="Username"
+                      name="username"
+                      id="username"
                       placeholder="devidjhon24"
                       defaultValue="devidjhon24"
                     />
@@ -152,13 +152,13 @@ const Settings = () => {
                   <div className="mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="Username"
+                      htmlFor="bio"
                     >
                       BIO
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
-                        <svg
+                      <svg
                           className="fill-current"
                           width="20"
                           height="20"
@@ -187,7 +187,6 @@ const Settings = () => {
                           </defs>
                         </svg>
                       </span>
-
                       <textarea
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         name="bio"
@@ -217,6 +216,8 @@ const Settings = () => {
               </div>
             </div>
           </div>
+
+
           <div className="col-span-5 xl:col-span-2">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
@@ -321,4 +322,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default Settings;  
