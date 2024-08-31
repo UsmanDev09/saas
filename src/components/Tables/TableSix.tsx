@@ -1,13 +1,32 @@
-'use client';
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+"use client";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { User } from "@/types/user";
 import DropdownFour from "@/components/Dropdowns/DropdownFour";
+import EditUserPopup from "@/components/EditUserPopup";
+import { deleteUser } from "@/redux/tables/tablesSlice"; // Update this path if needed
 
 const TableSix: React.FC = () => {
   const dispatch = useDispatch();
   const users = useSelector((state: RootState) => state.tables.users);
+
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [selectedUserIndex, setSelectedUserIndex] = useState<number | null>(null);
+
+  const handleEdit = (index: number) => {
+    setSelectedUserIndex(index);
+    setIsEditPopupOpen(true);
+  };
+
+  const handleDelete = (index: number) => {
+    dispatch(deleteUser(index));
+  };
+
+  const handleCloseEditPopup = () => {
+    setIsEditPopupOpen(false);
+    setSelectedUserIndex(null);
+  };
 
   return (
     <div className="max-w-full overflow-x-auto">
@@ -67,6 +86,8 @@ const TableSix: React.FC = () => {
                       ? "bottom-full mb-1"
                       : ""
                   }
+                  onEdit={() => handleEdit(index)}
+                  onDelete={() => handleDelete(index)}
                 />
               </div>
             </div>
@@ -74,6 +95,13 @@ const TableSix: React.FC = () => {
         </div>
         {/* Table body end */}
       </div>
+      {isEditPopupOpen && selectedUserIndex !== null && (
+        <EditUserPopup
+          user={users[selectedUserIndex]}
+          onClose={handleCloseEditPopup}
+          index={selectedUserIndex}
+        />
+      )}
     </div>
   );
 };

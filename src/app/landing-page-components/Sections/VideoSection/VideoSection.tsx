@@ -21,7 +21,7 @@ const VideoSection: React.FC<VideoSectionProps> = ({ videoId }) => {
     <div className="flex flex-col items-center p-[16px] m-[-16px]">
       <div className="flex flex-col justify-center shadow-2xl">
             <YouTube videoId={videoId} opts={opts} />
-            <div className="p-[20px] flex flex-col items-start justify-center bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200">
+            <div className="p-[20px] flex flex-col items-start justify-center rounded-lg shadow-md border border-gray-200">
                 <div className="text-black text-2xl font-bold mb-[10px]">
                     <h1>Open SaaS</h1>
                 </div>

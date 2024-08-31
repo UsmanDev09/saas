@@ -30,7 +30,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-white dark:bg-gray-800 text-black py-[24px] flex items-center justify-between">
+    <nav className="py-6 flex items-center justify-between">
       {/* Left-aligned section */}
       <div className="flex items-center space-x-2 gap-1">
         <img src="/assets/logo.png" alt="Logo" className="h-8" />
@@ -47,7 +47,7 @@ const Navbar: React.FC = () => {
       {/* Right-aligned section */}
       <div className="flex items-center space-x-4">
         {/* Dark Mode Toggle */}
-        <div className={`relative w-14 h-7 rounded-full ${isDarkMode ? 'bg-blue-500' : 'bg-gray-300'}`}>
+        <div className={`relative w-14 h-7 rounded-full ${isDarkMode ? 'bg-blue-500' : 'bg-gray'}`}>
           <input
             type="checkbox"
             id="dark-mode-toggle"
@@ -58,10 +58,10 @@ const Navbar: React.FC = () => {
           <label htmlFor="dark-mode-toggle" className="flex items-center h-full cursor-pointer">
             <div
               className={`absolute top-1/2 transform -translate-y-1/2 transition-transform duration-300 ease-in-out flex items-center justify-center rounded-full h-6 w-6 ${
-                isDarkMode ? 'bg-white translate-x-6' : 'bg-white translate-x-1'
+                isDarkMode ? 'bg-gray translate-x-6' : 'bg-white translate-x-1'
               }`}
             >
-              {isDarkMode ? <FaMoon className="text-gray-400" /> : <FaSun className="text-gray-400" />}
+              {isDarkMode ? <FaMoon style={{ color: '#8E8E8E' }} /> : <FaSun style={{ color: '#8E8E8E' }} />}
             </div>
           </label>
         </div>

@@ -78,7 +78,7 @@ const features = [
 
 const FeaturesSection: React.FC = () => {
   return (
-    <div className="px-[32px] mt-[192px] bg-white dark:bg-gray-800 text-black">
+    <div className="px-8 mt-48 text-black">
         <div className='mt-[8px] flex items-center justify-center gap-3 text-5xl font-bold'>
             <h2 className=" text-yellow-400 font-bold text-center">100%</h2>
             <h2 className="">Open-Source</h2>
