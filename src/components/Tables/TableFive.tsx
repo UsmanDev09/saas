@@ -51,7 +51,7 @@ const TableFive: React.FC = () => {
                 onClick={() => setIsAddUserPopupOpen(true)}
                 className="px-3 py-1.5 bg-blue-500 text-white rounded-md text-sm"
               >
-                Add User
+                +
               </button>
             </div>
           </div>
