@@ -21,7 +21,7 @@ const Feature: React.FC<FeatureProps> = ({ icon, title, description, link }) => 
         {title}
       </dt>
 
-      <dd className="mt-2 text-base leading-7 text-gray-600 dark:text-gray-400">
+      <dd className="mt-2 text-base leading-7 text-gray-600 dark:text-gray">
         {description}
       </dd>
     </a>

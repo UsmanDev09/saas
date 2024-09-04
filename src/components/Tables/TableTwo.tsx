@@ -7,6 +7,7 @@ import EditProductPopover from '../EditProductPopover';
 import AddProductPopover from '../AddProductPopover';
 import { Product } from '@/types/product';
 import { useState } from 'react';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const TableTwo = () => {
   const dispatch = useDispatch();
@@ -120,18 +121,18 @@ const TableTwo = () => {
               </p>
             </div>
 
-            <div className="flex items-center justify-center p-2.5 xl:p-5">
+            <div className="flex items-center justify-center gap-4 p-2.5 xl:p-5">
               <button
                 onClick={() => handleEdit(product)}
                 className="text-primary mr-2"
               >
-                Edit
+                <FaEdit className="cursor-pointer text-primary" />
               </button>
               <button
                 onClick={() => handleDelete(product.name)}
                 className="text-red-500"
               >
-                Delete
+                <FaTrash className="cursor-pointer text-red-500" />
               </button>
             </div>
           </div>

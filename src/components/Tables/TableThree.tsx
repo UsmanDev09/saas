@@ -6,6 +6,7 @@ import { Package } from '@/types/package';
 import EditPackagePopover from '../EditPackagePopover';
 import AddPackagePopover from '../AddPackagePopover';
 import { useState } from 'react';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const TableThree = () => {
   const dispatch = useDispatch();
@@ -93,18 +94,18 @@ const TableThree = () => {
               </p>
             </div>
 
-            <div className="flex items-center justify-center p-2.5 xl:p-5">
+            <div className="flex items-center justify-center gap-4 p-2.5 xl:p-5">
               <button
                 onClick={() => handleEdit(pkg)}
                 className="text-primary mr-2"
               >
-                Edit
+                <FaEdit className="cursor-pointer text-primary" />
               </button>
               <button
                 onClick={() => handleDelete(pkg.name)}
                 className="text-red-500"
               >
-                Delete
+                <FaTrash className="cursor-pointer text-red-500" />
               </button>
             </div>
           </div>

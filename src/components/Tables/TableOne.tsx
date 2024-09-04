@@ -7,6 +7,7 @@ import { BRAND } from '@/types/brand';
 import EditTopBrandsPopover from '../EditTopBrandsPopover';
 import AddTopBrandsPopover from '../AddTopBrandsPopover';
 import { useState } from 'react';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const TableOne = () => {
   const dispatch = useDispatch();
@@ -112,18 +113,18 @@ const TableOne = () => {
               <p className="text-meta-5">{brand.conversion}%</p>
             </div>
 
-            <div className="flex items-center justify-center p-2.5 xl:p-5">
+            <div className="flex items-center justify-center gap-4 p-2.5 xl:p-5">
               <button
                 onClick={() => handleEdit(brand)}
                 className="text-primary mr-2"
               >
-                Edit
+                <FaEdit className="cursor-pointer text-primary" />
               </button>
               <button
                 onClick={() => handleDelete(brand.name)}
                 className="text-red-500"
               >
-                Delete
+                <FaTrash className="cursor-pointer text-red-500" />
               </button>
             </div>
           </div>

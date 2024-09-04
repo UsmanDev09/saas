@@ -1,11 +1,15 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { FaMoon, FaSun } from 'react-icons/fa';
+import { FaMoon, FaSun, FaChevronDown } from 'react-icons/fa';
+import { useAuth, useUser, SignOutButton } from '@clerk/nextjs';
 
 const Navbar: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const { isLoaded, user } = useUser(); // Fetch user info
+  const { signOut } = useAuth(); // Sign out method
 
   useEffect(() => {
     // Check localStorage for dark mode preference on mount
@@ -27,6 +31,14 @@ const Navbar: React.FC = () => {
       }
       return newMode;
     });
+  };
+
+  const handleDropdownToggle = () => {
+    setShowDropdown(prev => !prev);
+  };
+
+  const handleLogout = () => {
+    signOut();
   };
 
   return (
@@ -65,7 +77,28 @@ const Navbar: React.FC = () => {
             </div>
           </label>
         </div>
-        <Link href="/pages/demo">Try the demo app</Link>
+
+        {/* User Info and Dropdown */}
+        {isLoaded && user ? (
+          <div className="relative">
+            <button onClick={handleDropdownToggle} className="flex items-center space-x-2">
+              <span>{user.emailAddresses[0]?.emailAddress || 'User'}</span>
+              <FaChevronDown />
+            </button>
+            {showDropdown && (
+              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-lg">
+                <Link href="/pages/demo" className="block px-4 py-2 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700">
+                  Admin Dashboard
+                </Link>
+                <button onClick={handleLogout} className="block px-4 py-2 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 w-full text-left">
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <Link href="/pages/demo">Try the demo app</Link>
+        )}
       </div>
     </nav>
   );

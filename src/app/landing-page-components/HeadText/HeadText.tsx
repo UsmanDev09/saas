@@ -20,7 +20,7 @@ const Header: React.FC = () => {
         <h1 className="text-6xl font-bold text-gray-800 dark:text-white max-w-4xl font-Virgil">
           The free SaaS template with superpowers
         </h1>
-        <p className="text-lg text-black dark:text-gray-400 max-w-3xl mx-auto mt-[24px]">
+        <p className="text-lg text-black dark:text-gray max-w-3xl mx-auto mt-[24px]">
           An open-source, feature-rich, full-stack React + NodeJS template that manages features for you.
         </p>
         

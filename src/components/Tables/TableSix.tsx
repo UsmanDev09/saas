@@ -5,13 +5,15 @@ import { RootState } from "@/redux/store";
 import { User } from "@/types/user";
 import DropdownFour from "@/components/Dropdowns/DropdownFour";
 import EditUserPopup from "@/components/EditUserPopup";
-import { deleteUser } from "@/redux/tables/tablesSlice"; // Update this path if needed
+import AddUserPopup from "@/components/AddUserPopup";
+import { deleteUser, addUser } from "@/redux/tables/tablesSlice";
 
 const TableSix: React.FC = () => {
   const dispatch = useDispatch();
   const users = useSelector((state: RootState) => state.tables.users);
 
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [selectedUserIndex, setSelectedUserIndex] = useState<number | null>(null);
 
   const handleEdit = (index: number) => {
@@ -21,6 +23,11 @@ const TableSix: React.FC = () => {
 
   const handleDelete = (index: number) => {
     dispatch(deleteUser(index));
+  };
+
+  const handleAddUser = (user: User) => {
+    dispatch(addUser(user));
+    setIsAddPopupOpen(false);
   };
 
   const handleCloseEditPopup = () => {
@@ -45,8 +52,13 @@ const TableSix: React.FC = () => {
           <div className="col-span-2">
             <h5 className="font-medium text-white">Role</h5>
           </div>
-          <div className="col-span-1">
-            <h5 className="text-right font-medium text-white">Edit</h5>
+          <div className="col-span-1 flex justify-end">
+            <button
+              onClick={() => setIsAddPopupOpen(true)}
+              className="px-3 py-1.5 bg-blue-500 mr-7 text-white rounded-md text-sm"
+            >
+              +
+            </button>
           </div>
         </div>
         {/* Table header end */}
@@ -77,7 +89,7 @@ const TableSix: React.FC = () => {
               <div className="col-span-2">
                 <p className="text-[#637381] dark:text-bodydark">{item.role}</p>
               </div>
-              <div className="relative col-span-1">
+              <div className="relative col-span-1 flex justify-end">
                 <DropdownFour
                   classes={
                     index < 2
@@ -100,6 +112,12 @@ const TableSix: React.FC = () => {
           user={users[selectedUserIndex]}
           onClose={handleCloseEditPopup}
           index={selectedUserIndex}
+        />
+      )}
+      {isAddPopupOpen && (
+        <AddUserPopup
+          onClose={() => setIsAddPopupOpen(false)}
+          onSubmit={handleAddUser}
         />
       )}
     </div>

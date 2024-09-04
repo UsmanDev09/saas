@@ -2,14 +2,19 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import { deleteUser, addUser } from "@/redux/tables/tablesSlice";
+import { addUser, deleteUser } from "@/redux/tables/tablesSlice";
 import { User } from "@/types/user";
 import AddUserPopup from "../AddUserPopup";
+import EditUserPopup from "../EditUserPopup";
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const TableFive: React.FC = () => {
   const dispatch = useDispatch();
   const users = useSelector((state: RootState) => state.tables.users);
   const [isAddUserPopupOpen, setIsAddUserPopupOpen] = useState(false);
+  const [isEditUserPopupOpen, setIsEditUserPopupOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUserIndex, setSelectedUserIndex] = useState<number | null>(null);
 
   const handleDelete = (index: number) => {
     dispatch(deleteUser(index));
@@ -18,6 +23,18 @@ const TableFive: React.FC = () => {
   const handleAddUser = (user: User) => {
     dispatch(addUser(user));
     setIsAddUserPopupOpen(false);
+  };
+
+  const handleEditUser = (user: User, index: number) => {
+    setSelectedUser(user);
+    setSelectedUserIndex(index);
+    setIsEditUserPopupOpen(true);
+  };
+
+  const closeEditUserPopup = () => {
+    setIsEditUserPopupOpen(false);
+    setSelectedUser(null);
+    setSelectedUserIndex(null);
   };
 
   return (
@@ -46,10 +63,10 @@ const TableFive: React.FC = () => {
                 ROLE
               </h5>
             </div>
-            <div className="col-span-1 flex justify-end">
+            <div className="col-span-1 flex justify-start">
               <button
                 onClick={() => setIsAddUserPopupOpen(true)}
-                className="px-3 py-1.5 bg-blue-500 text-white rounded-md text-sm"
+                className="px-3 py-1.5 ml-4 bg-blue-500 text-white rounded-md text-sm"
               >
                 +
               </button>
@@ -82,12 +99,18 @@ const TableFive: React.FC = () => {
                     {user.role}
                   </p>
                 </div>
-                <div className="col-span-1 flex items-center">
+                <div className="col-span-1 flex justify-start gap-4 space-x-2">
+                  <button
+                    onClick={() => handleEditUser(user, index)}
+                    className="text-primary mr-2"
+              >
+                <FaEdit className="cursor-pointer text-primary" />
+                  </button>
                   <button
                     onClick={() => handleDelete(index)}
-                    className="text-primary text-sm"
-                  >
-                    Delete
+                    className="text-red-500"
+              >
+                <FaTrash className="cursor-pointer text-red-500" />
                   </button>
                 </div>
               </div>
@@ -99,6 +122,13 @@ const TableFive: React.FC = () => {
         <AddUserPopup
           onClose={() => setIsAddUserPopupOpen(false)}
           onSubmit={handleAddUser}
+        />
+      )}
+      {isEditUserPopupOpen && selectedUser !== null && selectedUserIndex !== null && (
+        <EditUserPopup
+          user={selectedUser}
+          index={selectedUserIndex}
+          onClose={closeEditUserPopup}
         />
       )}
     </div>
