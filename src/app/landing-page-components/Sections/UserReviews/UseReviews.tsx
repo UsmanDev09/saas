@@ -4,9 +4,9 @@ import UserCard from './UserCard';
 const UserReviews: React.FC = () => {
   return (
     <div className='mx-auto mt-32 max-w-7xl sm:mt-56 sm:px-6 lg:px-8'>
-      <div className='relative sm:left-5 -m-2 rounded-xl bg-yellow-400/20 lg:ring-1 lg:ring-yellow-500/50 lg:-m-4 p-8'>
-        <div className='elative sm:top-5 sm:right-5 bg-gray-800 dark:bg-boxdark px-8 py-20 shadow-xl sm:rounded-xl sm:px-10 sm:py-16 md:px-12 lg:px-20'>
-          <h2 className='text-left text-xl font-semibold tracking-wide leading-7 text-gray-500 dark:text-white mb-6'>What Our Users Say</h2>
+      <div className='relative sm:left-5 -m-2 rounded-xl bg-yellow-400/20 lg:ring-1 lg:ring-yellow-500/50 lg:-m-4'>
+        <div className='relative sm:top-5 sm:right-5 bg-gray-800 bg-boxdark px-8 py-20 shadow-xl sm:rounded-xl sm:px-10 sm:py-16 md:px-12 lg:px-20'>
+          <h2 className='text-left text-xl font-semibold tracking-wide leading-7 text-gray-500 text-white dark:text-gray-3 mb-6'>What Our Users Say</h2>
           <div className="relative flex flex-wrap gap-6 w-full mt-6 z-10 justify-between lg:mx-0">
             <UserCard
               quote="I used Wasp to build and sell my AI-augmented SaaS app for marketplace vendors within two months!"

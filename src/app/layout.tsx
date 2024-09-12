@@ -6,6 +6,14 @@ import "./globals.css";
 import { Provider } from 'react-redux';
 import store from '@/redux/store';
 
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton
+} from '@clerk/nextjs'
+
 const inter = Inter({ subsets: ["latin"] });
 
 // export const metadata: Metadata = {
@@ -20,9 +28,11 @@ export default function RootLayout({
 }>) {
   return (
     <Provider store={store}>
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+      <ClerkProvider>
+        <html lang="en">
+          <body className={inter.className}>{children}</body>
+        </html>
+      </ClerkProvider>
     </Provider>
   );
 }

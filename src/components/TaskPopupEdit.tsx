@@ -13,9 +13,8 @@ interface Task {
   id: string;
   title: string;
   description: string;
-  list: string[];
+  column: 'To-Do' | 'In-Progress' | 'Completed';
   subtasks: Subtask[];
-  image?: File;
 }
 
 interface TaskPopupEditProps {
@@ -28,7 +27,7 @@ const TaskPopupEdit: React.FC<TaskPopupEditProps> = ({ popupOpen, setPopupOpen, 
   const dispatch = useDispatch<AppDispatch>();
   const [title, setTitle] = useState(task?.title || '');
   const [description, setDescription] = useState(task?.description || '');
-  const [list, setList] = useState<string[]>(task?.list || []);
+  const [column, setColumn] = useState<Task['column']>(task?.column || 'To-Do');
   const [files, setFiles] = useState<FileList | null>(null);
   const [subtasks, setSubtasks] = useState<Subtask[]>(task?.subtasks || []);
   const [subtaskInput, setSubtaskInput] = useState('');
@@ -37,7 +36,7 @@ const TaskPopupEdit: React.FC<TaskPopupEditProps> = ({ popupOpen, setPopupOpen, 
     if (task) {
       setTitle(task.title);
       setDescription(task.description);
-      setList(task.list);
+      setColumn(task.column);
       setSubtasks(task.subtasks);
     }
   }, [task]);
@@ -66,9 +65,9 @@ const TaskPopupEdit: React.FC<TaskPopupEditProps> = ({ popupOpen, setPopupOpen, 
         ...task,
         title,
         description,
-        list,
+        column,
         subtasks,
-        image: files ? files[0] : task.image,
+        // image: files ? files[0] : task.image,
       };
       dispatch(updateTask(updatedTask));
       setPopupOpen(false);
@@ -143,31 +142,21 @@ const TaskPopupEdit: React.FC<TaskPopupEditProps> = ({ popupOpen, setPopupOpen, 
 
           <div className="mb-5">
             <label
-              htmlFor="taskList"
+              htmlFor="taskColumn"
               className="mb-2.5 block font-medium text-black dark:text-white"
             >
-              Task list
+              Task column
             </label>
-            <div className="flex flex-col gap-3.5">
-              {list && list.length > 0 ? (
-                list.map((item, index) => (
-                  <div key={index} className="flex items-center gap-2.5">
-                    <input
-                      type="text"
-                      name="taskList"
-                      id={`taskList-${index}`}
-                      value={item}
-                      placeholder="Enter list text"
-                      className="w-full rounded-sm border border-stroke bg-white px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:focus:border-primary"
-                      readOnly
-                    />
-                  </div>
-                ))
-              ) : (
-                <p>No items in the list</p>
-              )}
-              {/* Add buttons to manipulate the list */}
-            </div>
+            <select
+              id="taskColumn"
+              value={column}
+              onChange={(e) => setColumn(e.target.value as Task['column'])}
+              className="w-full rounded-sm border border-stroke bg-white px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:focus:border-primary"
+            >
+              <option value="To-Do">To-Do</option>
+              <option value="In-Progress">In-Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
           </div>
 
           <div className="mb-5">
@@ -193,28 +182,20 @@ const TaskPopupEdit: React.FC<TaskPopupEditProps> = ({ popupOpen, setPopupOpen, 
                     className="flex h-12.5 w-12.5 items-center justify-center rounded-sm border border-stroke bg-white p-4 hover:bg-red-500 hover:text-white dark:border-strokedark dark:bg-boxdark dark:text-white dark:hover:bg-red-500"
                   >
                     <svg
-                        className="fill-current"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M1.5625 1.5625L18.4375 18.4375"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M1.5625 18.4375L18.4375 1.5625"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      className="fill-current"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M10.0001 8.1044L2.38707 0.495589C1.859 0.0317329 1.02301 0.0317329 0.495694 0.495589C-0.0318291 1.02306 -0.0318291 1.85888 0.495694 2.38635L8.10869 9.99599L0.495694 17.6056C-0.0318291 18.1331 -0.0318291 18.9689 0.495694 19.4964C0.717143 19.7177 1.0588 19.9001 1.44127 19.9001C1.75374 19.9001 2.13279 19.7971 2.40606 19.4771L10.0001 11.8864L17.6135 19.4964C17.8349 19.7177 18.1765 19.9001 18.5589 19.9001C18.8724 19.9001 19.2531 19.7964 19.5265 19.4737C20.0319 18.9452 20.0245 18.1256 19.5043 17.6056L11.8913 9.99599L19.5043 2.38635C20.032 1.85888 20.032 1.02306 19.5043 0.495589C18.9768 -0.0317329 18.141 -0.0317329 17.6135 0.495589L10.0001 8.1044Z"
+                        fill=""
+                      />
+                    </svg>
                   </button>
                 </div>
               ))}
@@ -223,13 +204,13 @@ const TaskPopupEdit: React.FC<TaskPopupEditProps> = ({ popupOpen, setPopupOpen, 
                   type="text"
                   value={subtaskInput}
                   onChange={(e) => setSubtaskInput(e.target.value)}
-                  placeholder="Add new subtask"
+                  placeholder="New subtask"
                   className="w-full rounded-sm border border-stroke bg-white px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:focus:border-primary"
                 />
                 <button
                   type="button"
                   onClick={handleSubtaskAdd}
-                  className="flex h-12.5 w-12.5 items-center justify-center rounded-sm border border-stroke bg-white p-4 hover:bg-green-500 hover:text-white dark:border-strokedark dark:bg-boxdark dark:text-white dark:hover:bg-green-500"
+                  className="h-12.5 rounded-sm border border-stroke bg-white px-4 py-3 text-primary hover:bg-primary hover:text-white dark:border-strokedark dark:bg-boxdark dark:text-primary dark:hover:bg-primary dark:hover:text-white"
                 >
                   <svg
                         className="fill-current"
@@ -259,19 +240,34 @@ const TaskPopupEdit: React.FC<TaskPopupEditProps> = ({ popupOpen, setPopupOpen, 
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-4">
-            <button
-              type="submit"
-              className="flex items-center justify-center rounded-sm bg-primary px-5 py-2.5 text-white hover:bg-primary-dark dark:bg-primary-dark dark:hover:bg-primary"
+          <div className="mb-5">
+            <label
+              htmlFor="taskImage"
+              className="mb-2.5 block font-medium text-black dark:text-white"
             >
-              Save
-            </button>
+              Task Image
+            </label>
+            <input
+              type="file"
+              id="taskImage"
+              onChange={(e) => setFiles(e.target.files)}
+              className="w-full rounded-sm border border-stroke bg-white px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:focus:border-primary"
+            />
+          </div>
+
+          <div className="flex gap-4">
             <button
               type="button"
               onClick={() => setPopupOpen(false)}
-              className="flex items-center justify-center rounded-sm bg-gray-200 px-5 py-2.5 text-black hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+              className="h-12 rounded-sm border border-stroke bg-white px-6 text-center text-black hover:bg-gray-200 dark:border-strokedark dark:bg-boxdark dark:text-white dark:hover:bg-gray-600"
             >
               Cancel
+            </button>
+            <button
+              type="submit"
+              className="h-12 rounded-sm bg-primary px-6 text-center text-white hover:bg-primary-dark dark:bg-primary-dark dark:hover:bg-primary"
+            >
+              Save Changes
             </button>
           </div>
         </form>

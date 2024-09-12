@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer: React.FC = () => {
   return (
-    <div className="w-full bg-boxdark-2 px-6 lg:px-8 dark:bg-boxdark-2">
+    <div className="w-full px-6 lg:px-8 dark:bg-boxdark-1">
       <footer aria-labelledby="footer-heading" className="relative w-full border-t border-gray-900/10 dark:border-gray-100/10 py-24 sm:mt-32">
         <h2 id="footer-heading" className="sr-only">Footer</h2>
         <div className="max-w-7xl mx-auto flex items-send justify-end mt-10 gap-20">

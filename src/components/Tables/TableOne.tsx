@@ -1,58 +1,46 @@
-import { BRAND } from "@/types/brand";
-import Image from "next/image";
-
-const brandData: BRAND[] = [
-  {
-    logo: "/images/brand/brand-01.svg",
-    name: "Google",
-    visitors: 3.5,
-    revenues: "5,768",
-    sales: 590,
-    conversion: 4.8,
-  },
-  {
-    logo: "/images/brand/brand-02.svg",
-    name: "Twitter",
-    visitors: 2.2,
-    revenues: "4,635",
-    sales: 467,
-    conversion: 4.3,
-  },
-  {
-    logo: "/images/brand/brand-03.svg",
-    name: "Github",
-    visitors: 2.1,
-    revenues: "4,290",
-    sales: 420,
-    conversion: 3.7,
-  },
-  {
-    logo: "/images/brand/brand-04.svg",
-    name: "Vimeo",
-    visitors: 1.5,
-    revenues: "3,580",
-    sales: 389,
-    conversion: 2.5,
-  },
-  {
-    logo: "/images/brand/brand-05.svg",
-    name: "Facebook",
-    visitors: 3.5,
-    revenues: "6,768",
-    sales: 390,
-    conversion: 4.2,
-  },
-];
+'use client';
+import { useSelector, useDispatch } from 'react-redux';
+import Image from 'next/image';
+import { RootState } from '@/redux/store';
+import { deleteBrand, updateBrand } from '@/redux/tables/tablesSlice';
+import { BRAND } from '@/types/brand';
+import EditTopBrandsPopover from '../EditTopBrandsPopover';
+import AddTopBrandsPopover from '../AddTopBrandsPopover';
+import { useState } from 'react';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const TableOne = () => {
+  const dispatch = useDispatch();
+  const brands = useSelector((state: RootState) => state.tables.brands);
+  const [selectedBrand, setSelectedBrand] = useState<BRAND | null>(null);
+  const [isEditPopoverOpen, setIsEditPopoverOpen] = useState(false);
+  const [isAddPopoverOpen, setIsAddPopoverOpen] = useState(false);
+
+  const handleEdit = (brand: BRAND) => {
+    setSelectedBrand(brand);
+    setIsEditPopoverOpen(true);
+  };
+
+  const handleDelete = (brandName: string) => {
+    dispatch(deleteBrand(brandName));
+  };
+
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-      <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
-        Top Channels
-      </h4>
+      <div className="flex justify-between items-center mb-6">
+        <h4 className="text-xl font-semibold text-black dark:text-white">
+          Top Channels
+        </h4>
+        <button
+          onClick={() => setIsAddPopoverOpen(true)}
+          className="text-primary text-2xl w-12 h-12 flex items-center justify-center bg-blue-500 rounded-full"
+        >
+          +
+        </button> 
+      </div>
 
-      <div className="flex flex-col">
-        <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-5">
+      <div className="flex flex-col space-y-4"> {/* Added space between sections */}
+        <div className="grid grid-cols-4 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-6">
           <div className="p-2.5 xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
               Source
@@ -78,12 +66,17 @@ const TableOne = () => {
               Conversion
             </h5>
           </div>
+          <div className="p-2.5 text-center xl:p-5">
+            <h5 className="text-sm font-medium uppercase xsm:text-base">
+              Actions
+            </h5>
+          </div>
         </div>
 
-        {brandData.map((brand, key) => (
+        {brands.map((brand: BRAND, key: number) => (
           <div
-            className={`grid grid-cols-3 sm:grid-cols-5 ${
-              key === brandData.length - 1
+            className={`grid grid-cols-4 sm:grid-cols-6 ${
+              key === brands.length - 1
                 ? ""
                 : "border-b border-stroke dark:border-strokedark"
             }`}
@@ -91,7 +84,13 @@ const TableOne = () => {
           >
             <div className="flex items-center gap-3 p-2.5 xl:p-5">
               <div className="flex-shrink-0">
-                <Image src={brand.logo} alt="Brand" width={48} height={48} />
+                {brand.logo ? (
+                  <Image src={brand.logo} alt="Brand" width={48} height={48} />
+                ) : (
+                  <div className="w-12 h-12 flex items-center justify-center bg-gray-200 text-gray-500">
+                    No Image
+                  </div>
+                )}
               </div>
               <p className="hidden text-black dark:text-white sm:block">
                 {brand.name}
@@ -113,8 +112,33 @@ const TableOne = () => {
             <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
               <p className="text-meta-5">{brand.conversion}%</p>
             </div>
+
+            <div className="flex items-center justify-center gap-4 p-2.5 xl:p-5">
+              <button
+                onClick={() => handleEdit(brand)}
+                className="text-primary mr-2"
+              >
+                <FaEdit className="cursor-pointer text-primary" />
+              </button>
+              <button
+                onClick={() => handleDelete(brand.name)}
+                className="text-red-500"
+              >
+                <FaTrash className="cursor-pointer text-red-500" />
+              </button>
+            </div>
           </div>
         ))}
+
+        {isEditPopoverOpen && selectedBrand && (
+          <EditTopBrandsPopover
+            onClose={() => setIsEditPopoverOpen(false)}
+            brand={selectedBrand}
+          />
+        )}
+        {isAddPopoverOpen && (
+          <AddTopBrandsPopover onClose={() => setIsAddPopoverOpen(false)} />
+        )}
       </div>
     </div>
   );

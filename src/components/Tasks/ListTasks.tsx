@@ -12,7 +12,7 @@ import TaskPopupEdit from "../TaskPopupEdit";
 
 const TaskList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const tasks = useSelector((state: RootState) => state.tasks.taskList);
+  const tasks = useSelector((state: RootState) => state.tasks.TaskList);
   const [popupOpen, setPopupOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<any>(null); // Adjust the type as needed
 

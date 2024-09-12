@@ -1,13 +1,18 @@
-"use client";
+'use client';
 import React, { useEffect, useRef, useState } from "react";
 
-const DropdownFour: React.FC<{ classes: string }> = ({ classes }) => {
+interface DropdownFourProps {
+  classes: string;
+  onEdit: () => void;
+  onDelete: () => void;
+}
+
+const DropdownFour: React.FC<DropdownFourProps> = ({ classes, onEdit, onDelete }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
 
-  // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;
@@ -21,9 +26,8 @@ const DropdownFour: React.FC<{ classes: string }> = ({ classes }) => {
     };
     document.addEventListener("click", clickHandler);
     return () => document.removeEventListener("click", clickHandler);
-  });
+  }, [dropdownOpen]);
 
-  // close if the esc key is pressed
   useEffect(() => {
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
       if (!dropdownOpen || keyCode !== 27) return;
@@ -31,7 +35,7 @@ const DropdownFour: React.FC<{ classes: string }> = ({ classes }) => {
     };
     document.addEventListener("keydown", keyHandler);
     return () => document.removeEventListener("keydown", keyHandler);
-  });
+  }, [dropdownOpen]);
 
   return (
     <div>
@@ -60,13 +64,19 @@ const DropdownFour: React.FC<{ classes: string }> = ({ classes }) => {
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
         className={`absolute right-0 z-1 w-full max-w-39.5 rounded-[5px] bg-white py-2.5 shadow-12 dark:bg-boxdark ${classes} ${
-          dropdownOpen === true ? "block" : "hidden"
+          dropdownOpen ? "block" : "hidden"
         }`}
       >
-        <button className="flex w-full px-4 py-2 text-sm hover:bg-whiter hover:text-primary dark:hover:bg-meta-4">
+        <button
+          className="flex w-full px-4 py-2 text-sm hover:bg-whiter hover:text-primary dark:hover:bg-meta-4"
+          onClick={onEdit}
+        >
           Edit
         </button>
-        <button className="flex w-full px-4 py-2 text-sm hover:bg-whiter hover:text-primary dark:hover:bg-meta-4">
+        <button
+          className="flex w-full px-4 py-2 text-sm hover:bg-whiter hover:text-primary dark:hover:bg-meta-4"
+          onClick={onDelete}
+        >
           Delete
         </button>
         <button className="flex w-full px-4 py-2 text-sm hover:bg-whiter hover:text-primary dark:hover:bg-meta-4">
